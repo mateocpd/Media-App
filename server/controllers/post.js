@@ -47,7 +47,7 @@ export const getUserPosts = async (req, res) => {
     }
 }
 
-/* Update */
+/* Updates */
 
 export const likePosts = async (req, res) => {
     try {
