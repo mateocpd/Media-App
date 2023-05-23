@@ -30,7 +30,7 @@ const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  const isNonMobileScreen = useMediaQuery("(min-width: 1000px)");
+  const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
@@ -58,7 +58,7 @@ const NavBar = () => {
         >
           Sociopedia
         </Typography>
-        {isNonMobileScreen && (
+        {isNonMobileScreens && (
           <FlexBetween
             backgroundColor={neutralLight}
             borderRadius="9px"
@@ -73,8 +73,8 @@ const NavBar = () => {
         )}
       </FlexBetween>
 
-      {/*Desktop Nav*/}
-      {isNonMobileScreen ? (
+      {/* DESKTOP NAV */}
+      {isNonMobileScreens ? (
         <FlexBetween gap="2rem">
           <IconButton onClick={() => dispatch(setMode())}>
             {theme.palette.mode === "dark" ? (
@@ -119,8 +119,8 @@ const NavBar = () => {
         </IconButton>
       )}
 
-      {/*Mobile Nav*/}
-      {!isNonMobileScreen && isMobileMenuToggled && (
+      {/* MOBILE NAV */}
+      {!isNonMobileScreens && isMobileMenuToggled && (
         <Box
           position="fixed"
           right="0"
@@ -131,7 +131,7 @@ const NavBar = () => {
           minWidth="300px"
           backgroundColor={background}
         >
-          {/* Close Icon*/}
+          {/* CLOSE ICON */}
           <Box display="flex" justifyContent="flex-end" p="1rem">
             <IconButton
               onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
@@ -140,7 +140,7 @@ const NavBar = () => {
             </IconButton>
           </Box>
 
-          {/*Menu Item*/}
+          {/* MENU ITEMS */}
           <FlexBetween
             display="flex"
             flexDirection="column"
@@ -193,4 +193,5 @@ const NavBar = () => {
     </FlexBetween>
   );
 };
+
 export default NavBar;
