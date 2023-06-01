@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
-    ManageAccountsOutlined,
-    EditOulined,
-    LocationOutlined,
-    WorkOutlinedOutlined,
+  ManageAccountsOutlined,
+  EditOulined,
+  LocationOutlined,
+  WorkOutlinedOutlined,
 } from "@mui/icons-material";
 
 import { Box, Typography, Divider, useTheme } from "@mui/material";
@@ -14,65 +14,100 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
-const UserWidget = ({userId, picturePath}) =>{
-    const [user, setUser] = useState(null);
-    const {palette} = useTheme();
-    const navigate = useNavigate();
-    const token = useSelector((state) => state.token);
-    const dark = palette.neutral.dark;
-    const medium = palette.neutral.medium;
-    const main = palette.neutral.main;
+const UserWidget = ({ userId, picturePath }) => {
+  const [user, setUser] = useState(null);
+  const { palette } = useTheme();
+  const navigate = useNavigate();
+  const token = useSelector((state) => state.token);
+  const dark = palette.neutral.dark;
+  const medium = palette.neutral.medium;
+  const main = palette.neutral.main;
 
-    const getUser = async () => {
-        const response = await fetch(`https://localhost:3001/users/${userId}`,
-        {
-            method: 'GET',
-            headers: { Authorization : `Bearer ${token}`},
-        });
-        const data = await response.json();
-        setUser(data);
-    };
+  const getUser = async () => {
+    const response = await fetch(`https://localhost:3001/users/${userId}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await response.json();
+    setUser(data);
+  };
 
-    useEffect(() => {
-        getUser();
-    },[])
+  useEffect(() => {
+    getUser();
+  }, []);
 
-    if(!user){
-        return(null);
-    }
+  if (!user) {
+    return null;
+  }
 
-    const {
-        firstName,
-        lastName,
-        location,
-        occupation,
-        viewedProfile,
-        impressions,
-        friends,
-    } = user;
+  const {
+    firstName,
+    lastName,
+    location,
+    occupation,
+    viewedProfile,
+    impressions,
+    friends,
+  } = user;
 
-    return(
-        <WidgetWrapper>
-            {/* First Row */}
-            <FlexBetween
-                gap="0.5rem"
-                pb="1.1rem"
-                onClick={() => Navigate(`/profile/${userId}`)}
+  return (
+    <WidgetWrapper>
+      {/* First Row */}
+      <FlexBetween
+        gap="0.5rem"
+        pb="1.1rem"
+        onClick={() => Navigate(`/profile/${userId}`)}
+      >
+        <FlexBetween gap="1rem">
+          <UserImage image={picturePath} />
+          <Box>
+            <Typography
+              variant="h4"
+              color={dark}
+              fontWeight="500"
+              sx={{
+                "&:hover": {
+                  color: palette.primary.light,
+                  cursor: "pointer",
+                },
+              }}
             >
-                <FlexBetween gap="1rem">
-                    <UserImage image={picturePath} />
-                    <Box>
-                        <Typography 
-                            variant="h4"
-                            color={dark}
-                            fontWeight="500"
-                        >
+              {firstName} {lastName}
+            </Typography>
+            <Typography color={medium}>{friends.length} friends</Typography>
+          </Box>
+          <ManageAccountsOutlined />
+        </FlexBetween>
 
-                        </Typography>
-                    </Box>
-                </FlexBetween>
+        <Divider />
+        {/*Second Row */}
+        <Box p="1rem 0">
+          <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
+            <LocationOutlined fontSize="large" sx={{ color: main }} />
+            <Typography color={medium}>{location}</Typography>
+          </Box>
+          <Box display="flex" alignItems="center" gap="1rem">
+            <WorkOutlinedOutlined fontSize="large" sx={{ color: main }} />
+            <Typography color={medium}>{occupation}</Typography>
+          </Box>
+        </Box>
 
-            </FlexBetween>
-        </WidgetWrapper>
-    )
+        {/*Third Row */}
+        <Box p="1rem 0">
+          <FlexBetween mb="0.5rem">
+            <Typography color={medium}> Who's viewed your profile</Typography>
+            <Typography color={main} fontWeight="500">
+              {viewedProfile}
+            </Typography>
+          </FlexBetween>
+          <FlexBetween>
+          <Typography color={medium}> Impressions of your post</Typography>
+            <Typography color={main} fontWeight="500">
+              {viewedProfile}
+            </Typography>
+          </FlexBetween>
+        </Box>
+      </FlexBetween>
+    </WidgetWrapper>
+  );
 };
